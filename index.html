@@ -3,74 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Amama!</title>
+    <title>For Amama | Happy Birthday</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --primary: #ff85a2;
-            --secondary: #fce4ec;
-            --accent: #d4af37;
+            --pink: #ff85a2;
+            --dark-pink: #f06292;
+            --gold: #d4af37;
+            --soft-bg: #fff5f7;
         }
+
         body {
             margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--secondary);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            background: var(--soft-bg);
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            color: #444;
             overflow-x: hidden;
+        }
+
+        /* Floating Hearts Animation */
+        .heart {
+            position: fixed;
+            color: var(--pink);
+            font-size: 20px;
+            animation: floatUp 6s linear infinite;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
             text-align: center;
         }
+
+        header {
+            padding: 50px 0;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: var(--dark-pink);
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Countdown Style */
+        #countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .time-box {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            min-width: 60px;
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--pink);
+        }
+
+        /* Message Section */
         .card {
             background: white;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            max-width: 90%;
-            z-index: 10;
-            border: 2px solid var(--primary);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(255, 133, 162, 0.2);
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 133, 162, 0.3);
         }
-        h1 { color: var(--primary); font-size: 2.5rem; margin-bottom: 0.5rem; }
-        p { color: #555; line-height: 1.6; }
-        .from { font-weight: bold; color: var(--accent); margin-top: 20px; }
-        
-        /* Floating Balloons Animation */
-        .balloon {
-            position: absolute;
-            bottom: -100px;
-            width: 50px;
-            height: 70px;
-            background: var(--primary);
-            border-radius: 50%;
-            opacity: 0.7;
-            animation: float 8s infinite ease-in;
+
+        .reasons {
+            text-align: left;
+            background: #fffafa;
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 20px;
         }
-        @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-110vh) rotate(20deg); opacity: 0; }
+
+        .reasons li {
+            margin-bottom: 10px;
+            list-style-type: "✨ ";
+        }
+
+        /* Interactive Buttons */
+        .btn {
+            background: var(--pink);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 133, 162, 0.4);
+            transition: transform 0.2s;
+            margin: 10px;
+        }
+
+        .btn:active { transform: scale(0.95); }
+
+        .btn-gold { background: var(--gold); }
+
+        footer {
+            margin-top: 50px;
+            font-size: 0.9rem;
+            color: #888;
         }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h1>Happy Birthday, Amama! 🎂</h1>
-        <p>Wishing you a day filled with laughter, joy, and all the things you love. You deserve the best year ahead!</p>
-        <div class="from">— With best wishes, Moiz</div>
+    <div class="container">
+        <header>
+            <h1>Amama 🎂</h1>
+            <p>Today is all about you!</p>
+        </header>
+
+        <div id="countdown">
+            <div class="time-box"><span id="days">00</span>days</div>
+            <div class="time-box"><span id="hours">00</span>hrs</div>
+            <div class="time-box"><span id="mins">00</span>mins</div>
+        </div>
+
+        <div class="card">
+            <h2>Dearest Amama,</h2>
+            <p>You make the world a brighter place just by being in it. On your special day, I wanted to create something as unique as you are.</p>
+            
+            <div class="reasons">
+                <h3>3 Reasons you're amazing:</h3>
+                <ul>
+                    <li>Your incredible kindness.</li>
+                    <li>The way you always know how to laugh.</li>
+                    <li>Simply being a wonderful friend.</li>
+                </ul>
+            </div>
+
+            <button class="btn" onclick="fireConfetti()">Click for a Surprise! 🎉</button>
+            <button class="btn btn-gold" id="musicBtn" onclick="toggleMusic()">Play Music 🎵</button>
+        </div>
+
+        <footer>
+            Created with ❤️ by Moiz
+        </footer>
     </div>
 
+    <audio id="bdaySong" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
-        function createBalloon() {
-            const balloon = document.createElement('div');
-            balloon.className = 'balloon';
-            balloon.style.left = Math.random() * 100 + 'vw';
-            balloon.style.backgroundColor = ['#ff85a2', '#ffb7c5', '#d4af37'][Math.floor(Math.random() * 3)];
-            balloon.style.animationDuration = (Math.random() * 5 + 5) + 's';
-            document.body.appendChild(balloon);
-            setTimeout(() => balloon.remove(), 8000);
+        // 1. Confetti Function
+        function fireConfetti() {
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ff85a2', '#d4af37', '#ffffff']
+            });
         }
-        setInterval(createBalloon, 700);
+
+        // 2. Heart Rain
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
+        }
+        setInterval(createHeart, 500);
+
+        // 3. Countdown Logic (Set to her actual birth date)
+        const targetDate = new Date("March 15, 2024 00:00:00").getTime(); // <--- CHANGE THIS DATE
+
+        setInterval(() => {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            if (diff > 0) {
+                document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+                document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                document.getElementById('mins').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            } else {
+                document.getElementById('countdown').innerHTML = "<h3>IT'S YOUR DAY! 🥳</h3>";
+            }
+        }, 1000);
+
+        // 4. Music Toggle
+        function toggleMusic() {
+            const song = document.getElementById('bdaySong');
+            const btn = document.getElementById('musicBtn');
+            if (song.paused) {
+                song.play();
+                btn.innerText = "Pause Music ⏸️";
+            } else {
+                song.pause();
+                btn.innerText = "Play Music 🎵";
+            }
+        }
     </script>
 </body>
 </html>
