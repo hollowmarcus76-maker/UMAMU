@@ -3,219 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Amama</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;400;600&family=Playfair+Display:italic,wght@0,700;1,700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    
+    <title>Happy Birthday Amama!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@300;600;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --rose-gold: #e7bcb1;
-            --deep-rose: #b5838d;
-            --cream: #fff5f3;
-            --text-dark: #4a4e69;
-        }
+        :root { --primary: #ff4081; --accent: #7c4dff; --gold: #ffd700; --glass: rgba(255, 255, 255, 0.1); }
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+        body { margin: 0; font-family: 'Inter', sans-serif; background: #0a0a0a; color: white; overflow-x: hidden; }
+        
+        .bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 20% 30%, #2c003e 0%, transparent 40%), radial-gradient(circle at 80% 70%, #001d3d 0%, transparent 40%); z-index: -1; }
+        .container { display: flex; flex-direction: column; align-items: center; padding: 0 20px; position: relative; z-index: 10; }
 
-        body {
-            margin: 0;
-            background-color: var(--cream);
-            color: var(--text-dark);
-            font-family: 'Montserrat', sans-serif;
-            overflow-x: hidden;
-        }
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .card { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); border-radius: 40px; padding: 40px 20px; margin: 20px 0; width: 100%; max-width: 400px; text-align: center; }
 
-        /* Sparkling Background Effect */
-        #sparkle-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
+        h1 { font-family: 'Dancing Script', cursive; font-size: 3.5rem; color: var(--primary); margin: 0; }
+        h2 { font-weight: 800; letter-spacing: -1px; margin: 10px 0; }
 
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            z-index: 2;
-            position: relative;
+        /* Small Gift Boxes */
+        .gift-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .gift-box { 
+            background: linear-gradient(45deg, var(--primary), var(--accent)); 
+            aspect-ratio: 1/1; border-radius: 20px; display: flex; justify-content: center; 
+            align-items: center; font-size: 2.5rem; cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3); position: relative;
         }
+        .gift-box:hover { transform: scale(1.05); }
+        .gift-box.opened { transform: scale(0); opacity: 0; pointer-events: none; }
+        
+        .reveal-text { position: absolute; font-weight: 600; color: white; padding: 10px; font-size: 0.9rem; opacity: 0; transition: 0.5s; z-index: -1; }
+        .gift-container { position: relative; height: 120px; display: flex; justify-content: center; align-items: center; }
 
-        .main-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            margin: 0;
-            color: var(--deep-rose);
-            font-style: italic;
+        /* Big Prize Box Styles */
+        .big-prize-container { margin-top: 40px; text-align: center; }
+        .big-gift {
+            width: 150px; height: 150px; background: linear-gradient(45deg, var(--gold), #ff9800);
+            border-radius: 30px; display: flex; justify-content: center; align-items: center;
+            font-size: 5rem; cursor: pointer; margin: 0 auto;
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
+            animation: pulse 2s infinite; transition: 0.5s;
         }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        .big-gift.opened { transform: scale(0); opacity: 0; pointer-events: none; }
+        
+        #final-message { display: none; margin-top: 20px; font-size: 1.5rem; font-family: 'Dancing Script', cursive; color: var(--gold); }
 
-        .name-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 5rem;
-            color: var(--rose-gold);
-            margin-top: -10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
-        }
-
-        /* The Gift Box */
-        .gift-section {
-            padding: 60px 20px;
-            text-align: center;
-            background: white;
-            border-top: 1px solid var(--rose-gold);
-            border-bottom: 1px solid var(--rose-gold);
-        }
-
-        .gift-box {
-            font-size: 80px;
-            cursor: pointer;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: inline-block;
-        }
-
-        .gift-box:hover {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        /* Content Card */
-        .wish-card {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 40px;
-            background: white;
-            border-radius: 2px;
-            box-shadow: 20px 20px 0px var(--rose-gold);
-            border: 1px solid #eee;
-            position: relative;
-        }
-
-        .wish-card h2 {
-            font-family: 'Playfair Display', serif;
-            color: var(--deep-rose);
-            letter-spacing: 2px;
-        }
-
-        .wish-text {
-            line-height: 2;
-            font-size: 1.1rem;
-            font-weight: 300;
-        }
-
-        .signature {
-            margin-top: 30px;
-            font-family: 'Dancing Script', cursive;
-            font-size: 2rem;
-            color: var(--deep-rose);
-        }
-
-        /* Floating Animation */
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-
-        .float { animation: floating 4s ease-in-out infinite; }
-
-        footer {
-            padding: 40px;
-            text-align: center;
-            font-size: 0.8rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            opacity: 0.5;
-        }
-
-        button.reveal-btn {
-            background: var(--deep-rose);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-family: 'Montserrat', sans-serif;
-            letter-spacing: 2px;
-            margin-top: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button.reveal-btn:hover {
-            letter-spacing: 4px;
-            background: var(--text-dark);
-        }
+        .btn { background: linear-gradient(45deg, var(--primary), var(--accent)); color: white; border: none; padding: 18px 40px; border-radius: 50px; font-weight: 700; cursor: pointer; margin-top: 20px; }
     </style>
 </head>
 <body>
+    <div class="bg"></div>
+    <div class="container">
+        <section class="hero">
+            <p style="text-transform: uppercase; letter-spacing: 2px; color: var(--accent);">Moiz Presents</p>
+            <h1>Happy Birthday</h1>
+            <h2>Amama! ✨</h2>
+            <p>Unbox your standard gifts first...</p>
+        </section>
 
-    <canvas id="sparkle-canvas"></canvas>
-
-    <section class="hero">
-        <div class="float">
-            <p style="letter-spacing: 5px; text-transform: uppercase; font-size: 0.9rem;">To the wonderful</p>
-            <h1 class="main-title">Happy Birthday</h1>
-            <div class="name-title">Amama</div>
-        </div>
-    </section>
-
-    <section class="gift-section">
-        <div id="gift" class="gift-box" onclick="openGift()">🎁</div>
-        <p id="gift-hint" style="margin-top: 15px; font-style: italic; color: var(--deep-rose);">Amama, tap the gift to open your wish...</p>
-        
-        <div id="secret-message" style="display: none; margin-top: 30px;">
-            <div class="wish-card">
-                <h2>A Special Message</h2>
-                <p class="wish-text">
-                    Wishing you a day that is as beautiful and elegant as you are. 
-                    May this year be filled with new adventures, endless laughter, 
-                    and all the success you've been working so hard for. 
-                    You aren't just getting older; you're becoming a classic.
-                </p>
-                <div class="signature">With love, Moiz</div>
+        <section class="card">
+            <h2>Small Surprises 🎁</h2>
+            <div class="gift-grid">
+                <div class="gift-container">
+                    <div class="reveal-text">Endless Joy! 🌟</div>
+                    <div class="gift-box" onclick="openGift(this, false)">🎁</div>
+                </div>
+                <div class="gift-container">
+                    <div class="reveal-text">Best Friend! ❤️</div>
+                    <div class="gift-box" onclick="openGift(this, false)">🎁</div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <footer>
-        Celebrating You &bull; 2026
-    </footer>
+        <section class="card">
+            <h2>The Big Prize 🏆</h2>
+            <p>Wait until the end for this one!</p>
+            <div class="big-prize-container">
+                <div class="big-gift" id="prize" onclick="openGift(this, true)">🎁</div>
+                <div id="final-message">
+                    "Amama, you are truly the gold standard of friends. May all your dreams come true! - Moiz"
+                </div>
+            </div>
+        </section>
 
+        <section class="card">
+            <h2>The Grand Finale</h2>
+            <button class="btn" onclick="megaCelebration()">PARTY TIME! 🎂</button>
+            <p style="margin-top:15px; opacity:0.6;">Designed by Moiz</p>
+        </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
-        // Confetti Effect
-        function openGift() {
-            const gift = document.getElementById('gift');
-            const message = document.getElementById('secret-message');
-            const hint = document.getElementById('gift-hint');
+        function openGift(element, isBig) {
+            element.classList.add('opened');
             
-            // Celebration
-            confetti({
-                particleCount: 150,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#e7bcb1', '#b5838d', '#ffffff']
-            });
-
-            // Reveal Content
-            gift.innerHTML = "✨";
-            hint.style.display = "none";
-            message.style.display = "block";
-            message.scrollIntoView({ behavior: 'smooth' });
+            if (isBig) {
+                document.getElementById('final-message').style.display = 'block';
+                // Massive Gold & Pink Explosion
+                confetti({
+                    particleCount: 300, spread: 100, origin: { y: 0.6 },
+                    colors: ['#ffd700', '#ff4081', '#ffffff']
+                });
+            } else {
+                element.previousElementSibling.style.opacity = "1";
+                element.previousElementSibling.style.zIndex = "1";
+                confetti({ particleCount: 40, spread: 50, origin: { y: 0.6 } });
+            }
         }
 
-        // Simple Sparkle Background
-        const canvas = document.getElementById('sparkle-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function initCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        function megaCelebration() {
+            var duration = 5 * 1000;
+            var end = Date.now() + duration;
+            (function frame() {
+                confetti({ particleCount: 7, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff4081', '#ffd700'] });
+                confetti({ particleCount: 7, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff4081', '#ffd700'] });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
         }
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.
-        
+    </script>
+</body>
+</html>
