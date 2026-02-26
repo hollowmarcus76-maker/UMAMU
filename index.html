@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Amama!</title>
+    <style>
+        :root {
+            --primary: #ff85a2;
+            --secondary: #fce4ec;
+            --accent: #d4af37;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--secondary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            text-align: center;
+        }
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 90%;
+            z-index: 10;
+            border: 2px solid var(--primary);
+        }
+        h1 { color: var(--primary); font-size: 2.5rem; margin-bottom: 0.5rem; }
+        p { color: #555; line-height: 1.6; }
+        .from { font-weight: bold; color: var(--accent); margin-top: 20px; }
+        
+        /* Floating Balloons Animation */
+        .balloon {
+            position: absolute;
+            bottom: -100px;
+            width: 50px;
+            height: 70px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: float 8s infinite ease-in;
+        }
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-110vh) rotate(20deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Happy Birthday, Amama! 🎂</h1>
+        <p>Wishing you a day filled with laughter, joy, and all the things you love. You deserve the best year ahead!</p>
+        <div class="from">— With best wishes, Moiz</div>
+    </div>
+
+    <script>
+        function createBalloon() {
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            balloon.style.left = Math.random() * 100 + 'vw';
+            balloon.style.backgroundColor = ['#ff85a2', '#ffb7c5', '#d4af37'][Math.floor(Math.random() * 3)];
+            balloon.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            document.body.appendChild(balloon);
+            setTimeout(() => balloon.remove(), 8000);
+        }
+        setInterval(createBalloon, 700);
+    </script>
+</body>
+</html>
